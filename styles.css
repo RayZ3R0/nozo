@@ -1,0 +1,164 @@
+#nozo-overlay-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 2147483647;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    will-change: opacity;
+}
+
+#nozo-overlay-container.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#nozo-wrapper {
+    position: relative;
+    width: 85vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+
+#nozo-overlay-container.visible #nozo-wrapper {
+    transform: scale(1);
+}
+
+#nozo-modal {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 24px;
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.08),
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 100px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+#nozo-controls {
+    position: absolute;
+    top: 0;
+    right: -60px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10;
+}
+
+.nozo-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(30, 30, 30, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.nozo-btn:hover {
+    transform: scale(1.08);
+    background: rgba(50, 50, 50, 0.85);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.nozo-btn:active {
+    transform: scale(0.95);
+}
+
+.nozo-close-btn:hover {
+    background-color: #ef4444;
+    border-color: #ef4444;
+}
+
+.nozo-maximize-btn:hover {
+    background-color: #22c55e;
+    border-color: #22c55e;
+}
+
+#nozo-iframe {
+    background: white;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 0.1s ease-out;
+}
+
+#nozo-overlay-container.visible #nozo-iframe {
+    opacity: 1;
+    transition: opacity 0.3s ease-out 0.15s;
+}
+
+@media (prefers-color-scheme: dark) {
+    #nozo-modal {
+        background: #121212;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            0 255px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    #nozo-iframe {
+        background: #121212;
+    }
+}
+
+#nozo-drop-zone {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: 300px;
+    height: 150px;
+    background: rgba(40, 40, 40, 0.85);
+    border: 2px dashed rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 2147483646;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#nozo-drop-zone.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+#nozo-drop-zone.hovered {
+    background: rgba(60, 100, 255, 0.95);
+    border-color: white;
+    transform: translateX(-50%) scale(1.05);
+}
