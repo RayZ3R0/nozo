@@ -106,6 +106,8 @@
     opacity: 0;
     will-change: opacity;
     transition: opacity 0.1s ease-out;
+    border: none;
+    display: block;
 }
 
 #nozo-overlay-container.visible #nozo-iframe {
