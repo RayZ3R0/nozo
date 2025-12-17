@@ -7,7 +7,8 @@
     "test": "jest",
     "test:e2e": "playwright test",
     "lint": "eslint .",
-    "pack": "bestzip extension.zip manifest.json background.js content.js styles.css icon16.png icon48.png icon128.png"
+    "pack": "bestzip extension.zip manifest.json background.js content.js styles.css icons/",
+    "version": "node scripts/version-sync.js"
   },
   "repository": {
     "type": "git",
