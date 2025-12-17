@@ -1,36 +1,53 @@
-# Nozo
+<p align="center">
+  <img src="icons/image.png" alt="Nozo Logo" width="128" height="128">
+</p>
 
-> Alt+Click (or Drag & Drop) any link to peek at it in a modal window.
+<h1 align="center">Nozo</h1>
 
-Nozo is a lightweight browser extension that lets you preview links without leaving your current page.
+<p align="center">
+  <strong>Effortless Link Previewing for Modern Browsers</strong>
+</p>
 
-## Features
-- **Link Peek**: Drag any link to the drop zone to open it in a modal.
-- **Secure**: Blocks potentially unsafe URLs (e.g., `javascript:`).
-- **Lightweight**: Minimal performance impact.
+<p align="center">
+  Preview links instantly without leaving your current context. Nozo provides a seamless, secure, and lightweight modal window for peeking at content via drag-and-drop interactions.
+</p>
+
+<br>
+
+## Overview
+
+Nozo enhances your browsing workflow by allowing you to "peek" at links before navigating. Simply drag any link to the designated drop zone to open it in a non-intrusive modal overlay. Designed with security and performance in mind, Nozo ensures a safe and fluid experience.
+
+## Key Features
+
+*   **Seamless Interaction**: Drag and drop mechanic preventing accidental triggers.
+*   **Security First**: Automatically sanitizes URLs and blocks unsafe protocols like `javascript:`.
+*   **Privacy Focused**: Modifies necessary headers locally to allow standard framing without tracking or external servers.
+*   **Lightweight**: Minimal resource footprint with no background processes when idle.
 
 ## Installation
 
-### From Release
-1. Go to the [Releases page](../../releases).
-2. Download `extension.zip` from the latest version.
-3. Unzip the file.
-4. Open `chrome://extensions`.
-5. Enable **Developer mode**.
-6. Click **Load unpacked** and select the unzipped folder.
+### From Release (Recommended)
+1.  Navigate to the [Releases](../../releases) page.
+2.  Download the `extension.zip` asset from the latest version.
+3.  Extract the archive to a preferred location.
+4.  Open your browser's extensions page (`chrome://extensions` or `edge://extensions`).
+5.  Enable **Developer mode** in the top right corner.
+6.  Select **Load unpacked** and choose the extracted folder.
 
-### From Source (Developer Mode)
-1. Clone this repository.
-2. Open Chrome/Edge and go to `chrome://extensions`.
-3. Enable **Developer mode** (top right).
-4. Click **Load unpacked**.
-5. Select the cloned directory.
+### From Source
+1.  Clone this repository:
+    ```bash
+    git clone https://github.com/RayZ3R0/nozo.git
+    cd nozo
+    ```
+2.  Follow steps 4-6 above, selecting the repository root directory.
 
 ## Development
 
 ### Prerequisites
-- Node.js 18+
-- npm
+*   Node.js 18+
+*   npm
 
 ### Setup
 ```bash
@@ -38,7 +55,7 @@ npm install
 ```
 
 ### Testing
-We use **Jest** for unit tests and **Playwright** for End-to-End (E2E) testing.
+We utilize **Jest** for unit testing and **Playwright** for robust End-to-End (E2E) validation.
 
 ```bash
 # Run unit tests
@@ -50,12 +67,13 @@ npm run test:e2e
 ```
 
 ### Packaging
-To create a distributable `.zip` file (excluding tests and dev files):
+To generate a production-ready artifact:
 
 ```bash
 npm run pack
 ```
-This generates `extension.zip` in the root directory.
+This command produces an optimized `extension.zip` in the project root, excluding development files.
 
 ## License
+
 ISC
