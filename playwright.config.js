@@ -7,7 +7,7 @@ const config = {
         timeout: 5000
     },
     use: {
-        headless: true, // Extensions usually need headful
+        headless: false, // Extensions usually need headful
         viewport: { width: 1280, height: 720 },
         ignoreHTTPSErrors: true,
         trace: 'on-first-retry',

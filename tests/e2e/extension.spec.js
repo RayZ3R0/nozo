@@ -11,7 +11,7 @@ test.describe('Nozo Extension E2E', () => {
     test.beforeEach(async () => {
         // Launch browser with extension
         context = await chromium.launchPersistentContext('', {
-            headless: true,
+            headless: false, // Extensions usually need headful (or xvfb in CI)
             args: [
                 `--disable-extensions-except=${extensionPath}`,
                 `--load-extension=${extensionPath}`
@@ -27,7 +27,6 @@ test.describe('Nozo Extension E2E', () => {
     test('extension loads and injects elements', async () => {
         await page.goto('https://example.com');
 
-        // Check for drop zone (might be hidden, but present in DOM)
         const dropZone = page.locator('#nozo-drop-zone');
         await expect(dropZone).toBeAttached();
 
@@ -37,42 +36,74 @@ test.describe('Nozo Extension E2E', () => {
 
     test('drag and drop link opens modal', async () => {
         await page.goto('https://example.com');
-
-        // Example.com has a link "More information..."
         const link = page.locator('a').first();
         const dropZone = page.locator('#nozo-drop-zone');
 
-        // Perform drag and drop
-        // Playwright dragTo is usually for elements, but we need to trigger the specific events
-        // or simulate the visual drag.
+        await page.evaluate(() => {
+            const link = document.querySelector('a');
+            const dropZone = document.getElementById('nozo-drop-zone');
 
-        // Since native drag-and-drop is tricky in Playwright/Puppeteer sometimes, 
-        // we can try the high-level API first.
-        await link.dragTo(dropZone);
+            const dragStartEvent = new MouseEvent('dragstart', { bubbles: true, cancelable: true, view: window });
+            Object.defineProperty(dragStartEvent, 'dataTransfer', { value: { setData: () => { }, effectAllowed: 'none' } });
+            link.dispatchEvent(dragStartEvent);
 
-        // Check if modal became visible
+            const dropEvent = new MouseEvent('drop', { bubbles: true, cancelable: true, view: window });
+            Object.defineProperty(dropEvent, 'dataTransfer', { value: { getData: () => '' } });
+            dropZone.dispatchEvent(dropEvent);
+        });
+
         const overlay = page.locator('#nozo-overlay-container');
         await expect(overlay).toHaveClass(/visible/);
 
-        // Check iframe source
         const iframe = page.locator('#nozo-iframe');
-        // The src should change. 
-        // Note: Example.com link is "https://www.iana.org/domains/example"
         await expect(iframe).toHaveAttribute('src', /iana\.org/);
     });
 
     test('header stripping allows X-Frame-Options blocked sites', async () => {
-        // This tests the background.js logic.
-        // We need a site that normally blocks iframing.
-        // E.g., google.com usually sets X-Frame-Options: SAMEORIGIN
 
         await page.goto('https://example.com');
 
-        // We will manually trigger the "openNozo" by using the console or dragging a created link
-        // to avoid reliance on finding a specific link.
         await page.evaluate(() => {
-            // eslint-disable-next-line no-undef
-            openNozo('https://www.google.com');
+            const link = document.createElement('a');
+            link.href = 'https://www.google.com';
+            link.id = 'test-blocked-link';
+            link.innerText = 'Test Link';
+            document.body.appendChild(link);
+        });
+
+        const dropZone = page.locator('#nozo-drop-zone');
+        const link = page.locator('#test-blocked-link');
+        await page.evaluate(() => {
+            const link = document.getElementById('test-blocked-link');
+            const dropZone = document.getElementById('nozo-drop-zone');
+
+            // 1. Trigger dragstart on the link
+            const dragStartEvent = new MouseEvent('dragstart', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            // Mock dataTransfer since we are dispatching manually
+            Object.defineProperty(dragStartEvent, 'dataTransfer', {
+                value: {
+                    setData: () => { },
+                    effectAllowed: 'none'
+                }
+            });
+            link.dispatchEvent(dragStartEvent);
+
+            // 2. Trigger drop on the drop zone
+            const dropEvent = new MouseEvent('drop', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            Object.defineProperty(dropEvent, 'dataTransfer', {
+                value: {
+                    getData: () => '', // content.js will use its internal draggedLink variable
+                }
+            });
+            dropZone.dispatchEvent(dropEvent);
         });
 
         const overlay = page.locator('#nozo-overlay-container');
@@ -80,19 +111,7 @@ test.describe('Nozo Extension E2E', () => {
 
         const iframe = page.locator('#nozo-iframe');
 
-        // We wait for the iframe to load content.
-        // If header stripping failed, it might show a browser error page or refuse to connect (in console).
-        // Checking for success is hard cross-origin, but we can check if it didn't crash.
-        // A better test might be to verify the request headers if we could intercept, 
-        // but declarativeNetRequest happens at network level.
-        // We can check if the iframe has content.
-        // Due to Cross-Origin, we can't read internal iframe content easily.
-        // But we can check if 'load' event fired on iframe or just wait.
 
         await page.waitForTimeout(2000);
-
-        // If we see the error page, we might be able to detect it? 
-        // Actually, verifying header stripping is best done by asserting the page loads specific content.
-        // But for a generic test, if google loads, it works.
     });
 });
