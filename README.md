@@ -76,4 +76,4 @@ This command produces an optimized `extension.zip` in the project root, excludin
 
 ## License
 
-ISC
+[MIT](LICENSE) © 2025 RayZ3R0

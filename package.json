@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "",
   "main": "background.js",
+  "license": "MIT",
   "scripts": {
     "test": "jest",
     "test:e2e": "playwright test",
