@@ -38,8 +38,16 @@ jobs:
       - name: Package Extension
         run: npm run pack
 
+      - name: Extract Release Notes
+        id: extract_notes
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          node scripts/extract-changelog.js $VERSION > RELEASE_NOTES.md
+          cat RELEASE_NOTES.md
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: extension.zip
+          body_path: RELEASE_NOTES.md
           generate_release_notes: true
