@@ -17,104 +17,125 @@ const overlayHTML = `
 <div id="nozo-drop-zone">Drop here to Nozo</div>
 `;
 
-document.body.insertAdjacentHTML('beforeend', overlayHTML);
+function initNozo() {
+    if (document.getElementById('nozo-overlay-container')) {
+        return;
+    }
 
-const overlay = document.getElementById('nozo-overlay-container');
-const modal = document.getElementById('nozo-modal');
-const iframe = document.getElementById('nozo-iframe');
-const closeBtn = document.querySelector('.nozo-close-btn');
-const maxBtn = document.querySelector('.nozo-maximize-btn');
-const dropZone = document.getElementById('nozo-drop-zone');
+    document.body.insertAdjacentHTML('beforeend', overlayHTML);
 
-function closeNozo() {
-    overlay.classList.remove('visible');
-    setTimeout(() => {
-        iframe.src = 'about:blank';
-    }, 350);
-}
+    const overlay = document.getElementById('nozo-overlay-container');
+    const iframe = document.getElementById('nozo-iframe');
+    const closeBtn = document.querySelector('.nozo-close-btn');
+    const maxBtn = document.querySelector('.nozo-maximize-btn');
+    const dropZone = document.getElementById('nozo-drop-zone');
 
-function openNozo(url) {
-    iframe.src = url;
-    overlay.classList.add('visible');
-}
+    function closeNozo() {
+        overlay.classList.remove('visible');
+        setTimeout(() => {
+            iframe.src = 'about:blank';
+        }, 350);
+    }
 
-overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closeNozo();
-});
+    function openNozo(url) {
+        iframe.src = url;
+        overlay.classList.add('visible');
+    }
 
-closeBtn.addEventListener('click', closeNozo);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeNozo();
+    });
 
-maxBtn.addEventListener('click', () => {
-    window.open(iframe.src, '_blank');
-    closeNozo();
-});
+    closeBtn.addEventListener('click', closeNozo);
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('visible')) {
+    maxBtn.addEventListener('click', () => {
+        window.open(iframe.src, '_blank');
         closeNozo();
-    }
-});
+    });
 
-let draggedLink = null;
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('visible')) {
+            closeNozo();
+        }
+    });
 
-document.addEventListener('dragstart', (e) => {
-    let target = e.target;
-    if (target.nodeType === 3) target = target.parentNode;
+    let draggedLink = null;
 
-    const anchor = target.closest('a');
+    document.addEventListener('dragstart', (e) => {
+        let target = e.target;
+        if (target.nodeType === 3) target = target.parentNode;
 
-    if (anchor && anchor.href) {
-        draggedLink = anchor.href;
-        dropZone.classList.add('active');
+        const anchor = target.closest('a');
 
-        e.dataTransfer.effectAllowed = 'copy';
-        e.dataTransfer.setData('text/plain', anchor.href);
-        e.dataTransfer.setData('text/uri-list', anchor.href);
-    }
-});
+        if (anchor && anchor.href) {
+            draggedLink = anchor.href;
+            dropZone.classList.add('active');
 
-document.addEventListener('dragend', (e) => {
-    setTimeout(() => {
-        draggedLink = null;
+            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.setData('text/plain', anchor.href);
+            e.dataTransfer.setData('text/uri-list', anchor.href);
+        }
+    });
+
+    document.addEventListener('dragend', () => {
+        setTimeout(() => {
+            draggedLink = null;
+            if (dropZone) {
+                dropZone.classList.remove('active');
+                dropZone.classList.remove('hovered');
+            }
+        }, 100);
+    });
+
+    dropZone.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('hovered');
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+        if (e.relatedTarget && !dropZone.contains(e.relatedTarget)) {
+            dropZone.classList.remove('hovered');
+        }
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = 'copy';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         dropZone.classList.remove('active');
         dropZone.classList.remove('hovered');
-    }, 100);
-});
 
-dropZone.addEventListener('dragenter', (e) => {
-    e.preventDefault();
-    dropZone.classList.add('hovered');
-});
+        const url = draggedLink || e.dataTransfer.getData('text/uri-list') || e.dataTransfer.getData('URL') || e.dataTransfer.getData('text/plain');
 
-dropZone.addEventListener('dragleave', (e) => {
-    if (e.relatedTarget && !dropZone.contains(e.relatedTarget)) {
-        dropZone.classList.remove('hovered');
+        if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+            openNozo(url);
+        } else {
+            console.warn('Nozo: Blocked potentially unsafe URL:', url);
+        }
+
+        draggedLink = null;
+    });
+
+    // Provide global for E2E testing if needed
+    window.openNozo = openNozo;
+
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
+        chrome.runtime.onMessage.addListener((request) => {
+            if (request.action === "openNozo" && request.url) {
+                openNozo(request.url);
+            }
+        });
     }
-});
+}
 
-dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.dataTransfer.dropEffect = 'copy';
-});
-
-dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dropZone.classList.remove('active');
-    dropZone.classList.remove('hovered');
-
-    const url = draggedLink || e.dataTransfer.getData('text/uri-list') || e.dataTransfer.getData('URL') || e.dataTransfer.getData('text/plain');
-
-    if (url) {
-        openNozo(url);
-    }
-
-    draggedLink = null;
-});
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "openNozo" && request.url) {
-        openNozo(request.url);
-    }
-});
+// Export for testing or auto-run
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { initNozo };
+} else {
+    initNozo();
+}
