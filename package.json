@@ -1,9 +1,9 @@
 {
   "name": "nozo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "background.js",
-  "license": "MIT",
+  "license": "ISC",
   "scripts": {
     "test": "jest",
     "test:e2e": "playwright test",
@@ -17,7 +17,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/RayZ3R0/nozo/issues"
