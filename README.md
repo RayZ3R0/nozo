@@ -11,15 +11,20 @@ Nozo is a lightweight browser extension that lets you preview links without leav
 
 ## Installation
 
+### From Release
+1. Go to the [Releases page](../../releases).
+2. Download `extension.zip` from the latest version.
+3. Unzip the file.
+4. Open `chrome://extensions`.
+5. Enable **Developer mode**.
+6. Click **Load unpacked** and select the unzipped folder.
+
 ### From Source (Developer Mode)
 1. Clone this repository.
 2. Open Chrome/Edge and go to `chrome://extensions`.
 3. Enable **Developer mode** (top right).
 4. Click **Load unpacked**.
 5. Select the cloned directory.
-
-### From Release
-(Coming soon to Chrome Web Store)
 
 ## Development
 
