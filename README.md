@@ -27,7 +27,14 @@ Nozo enhances your browsing workflow by allowing you to "peek" at links before n
 
 ## Installation
 
-### From Release (Recommended)
+### Firefox (Manual Install)
+1. Download `nozo-firefox.xpi` from the [Releases](../../releases) page.
+2. Go to `about:debugging#/runtime/this-firefox`.
+3. Click "Load Temporary Add-on...".
+4. Select the downloaded `.xpi` file.
+   > **Note**: As this is an unsigned extension, you will need to reload it every time you restart Firefox, or install the developer edition to disable signature verification permanently.
+
+### Chrome / Edge / Brave (From Release)
 1.  Navigate to the [Releases](../../releases) page.
 2.  Download the `extension.zip` asset from the latest version.
 3.  Extract the archive to a preferred location.
