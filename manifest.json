@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Nozo",
     "version": "1.0.5",
-    "description": "Alt+Click any link to peek at it in a modal window.",
+    "description": "Drag and Drop links to peek at them in a modal window.",
     "browser_specific_settings": {
         "gecko": {
             "id": "nozo@z3r0.github.io",
