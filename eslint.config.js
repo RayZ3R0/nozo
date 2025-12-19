@@ -12,7 +12,9 @@ module.exports = [
             globals: {
                 ...globals.browser,
                 ...globals.node,
+                node: "readonly",
                 chrome: "readonly",
+                browser: "readonly",
             },
             ecmaVersion: 12,
             sourceType: "module"
