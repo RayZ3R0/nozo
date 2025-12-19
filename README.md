@@ -28,14 +28,15 @@ Nozo enhances your browsing workflow by allowing you to "peek" at links before n
 ## Installation
 
 ### Firefox (Manual Install)
-1. Download `nozo-firefox.xpi` from the [Releases](../../releases) page.
-2. Go to `about:addons`.
-3. Click on the cogwheel and select "Install Add-on From File...".
-4. Select the downloaded `.xpi` file.
    > **Note**: As this is an unsigned extension, you will need to use **Firefox Developer Edition** / **Nightly** to install it permanently.
-5. Type `about:config` in the address bar and accept the risk.
-6. Search for `xpinstall.signatures.required`.
-7. Toggle the value to `false`.
+1. Type `about:config` in the address bar and accept the risk.
+2. Search for `xpinstall.signatures.required`.
+3. Toggle the value to `false`.
+4. Download `nozo-firefox.xpi` from the [Releases](../../releases) page.
+5. Go to `about:addons`.
+6. Click on the cogwheel and select "Install Add-on From File...".
+7. Select the downloaded `.xpi` file.
+
 
 ### Chrome / Edge / Brave (From Release)
 1.  Navigate to the [Releases](../../releases) page.
