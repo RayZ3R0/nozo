@@ -1,34 +1,53 @@
-const overlayHTML = `
-<div id="nozo-overlay-container">
-    <div id="nozo-wrapper">
-        <div id="nozo-controls">
-            <button class="nozo-btn nozo-maximize-btn" title="Open in New Tab">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </button>
-            <button class="nozo-btn nozo-close-btn" title="Close">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-        <div id="nozo-modal">
-            <iframe id="nozo-iframe" src="about:blank"></iframe>
-        </div>
-    </div>
-</div>
-<div id="nozo-drop-zone">Drop here to Nozo</div>
-`;
+// Nozo Content Script
 
 function initNozo() {
     if (document.getElementById('nozo-overlay-container')) {
         return;
     }
 
-    document.body.insertAdjacentHTML('beforeend', overlayHTML);
+    // Build overlay container
+    const overlayContainer = document.createElement('div');
+    overlayContainer.id = 'nozo-overlay-container';
 
-    const overlay = document.getElementById('nozo-overlay-container');
-    const iframe = document.getElementById('nozo-iframe');
-    const closeBtn = document.querySelector('.nozo-close-btn');
-    const maxBtn = document.querySelector('.nozo-maximize-btn');
-    const dropZone = document.getElementById('nozo-drop-zone');
+    const wrapper = document.createElement('div');
+    wrapper.id = 'nozo-wrapper';
+
+    const controls = document.createElement('div');
+    controls.id = 'nozo-controls';
+
+    const maxBtn = document.createElement('button');
+    maxBtn.className = 'nozo-btn nozo-maximize-btn';
+    maxBtn.title = 'Open in New Tab';
+    maxBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'nozo-btn nozo-close-btn';
+    closeBtn.title = 'Close';
+    closeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+
+    controls.appendChild(maxBtn);
+    controls.appendChild(closeBtn);
+
+    const modal = document.createElement('div');
+    modal.id = 'nozo-modal';
+
+    const iframe = document.createElement('iframe');
+    iframe.id = 'nozo-iframe';
+    iframe.src = 'about:blank';
+
+    modal.appendChild(iframe);
+    wrapper.appendChild(controls);
+    wrapper.appendChild(modal);
+    overlayContainer.appendChild(wrapper);
+
+    const dropZone = document.createElement('div');
+    dropZone.id = 'nozo-drop-zone';
+    dropZone.textContent = 'Drop here to Nozo';
+
+    document.body.appendChild(overlayContainer);
+    document.body.appendChild(dropZone);
+
+    const overlay = overlayContainer;
 
     function closeNozo() {
         overlay.classList.remove('visible');
