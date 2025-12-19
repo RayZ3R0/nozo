@@ -32,7 +32,14 @@ Nozo enhances your browsing workflow by allowing you to "peek" at links before n
 2. Go to `about:debugging#/runtime/this-firefox`.
 3. Click "Load Temporary Add-on...".
 4. Select the downloaded `.xpi` file.
-   > **Note**: As this is an unsigned extension, you will need to reload it every time you restart Firefox, or install the developer edition to disable signature verification permanently.
+   > **Note**: As this is an unsigned extension, you will need to load it temporarily (it persists until restart) or use **Firefox Developer Edition** / **Nightly** to install it permanently.
+35: 
+36: ### Firefox (Permanent Install - Developer Edition / Nightly Only)
+37: 1. Type `about:config` in the address bar and accept the risk.
+38: 2. Search for `xpinstall.signatures.required`.
+39: 3. Toggle the value to `false`.
+40: 4. Download `nozo-firefox.xpi` from Releases.
+41: 5. Drag the file into Firefox to install it permanently.
 
 ### Chrome / Edge / Brave (From Release)
 1.  Navigate to the [Releases](../../releases) page.
