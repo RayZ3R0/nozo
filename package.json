@@ -9,6 +9,7 @@
     "test:e2e": "playwright test",
     "lint": "eslint .",
     "pack": "bestzip extension.zip manifest.json background.js content.js styles.css icons/",
+    "pack:firefox": "mkdir -p dist_firefox && cp background.js content.js styles.css manifest.firefox.json dist_firefox/ && cp -r icons dist_firefox/ && mv dist_firefox/manifest.firefox.json dist_firefox/manifest.json && cd dist_firefox && bestzip ../nozo-firefox.xpi * && cd .. && rm -rf dist_firefox",
     "version": "node scripts/version-sync.js"
   },
   "repository": {

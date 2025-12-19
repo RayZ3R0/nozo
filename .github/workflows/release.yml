@@ -36,9 +36,8 @@ jobs:
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" npm run test:e2e
 
       - name: Package Extension
-        run: |
           npm run pack
-          cp extension.zip nozo-firefox.xpi
+          npm run pack:firefox
 
       - name: Extract Release Notes
         id: extract_notes
