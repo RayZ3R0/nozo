@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2025-12-20
+### Added
+- **Official Firefox Support**: Implemented dedicated `manifest.firefox.json` and build scripts to generate valid `.xpi` files. 
+- **Cross-Browser Compatibility**: Refactored `background.js` to seamlessly support both Chrome's `chrome.*` and Firefox's `browser.*` APIs.
+- **Build System**: Added `npm run pack:firefox` to generate Firefox-specific artifacts automatically.
+
+### Fixed
+- Fixed `release.yml` workflow syntax error preventing release creation.
+- Resolved `eslint` errors by adding proper web extension globals.
+- Updated `version-sync.js` to keep both manifest files in sync.
+
 ## [1.0.3] - 2025-12-18
 ### Added
 - Added experimental Firefox support (.xpi build and compat settings).
