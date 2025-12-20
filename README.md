@@ -2,6 +2,23 @@
   <img src="icons/image.png" alt="Nozo Logo" width="128" height="128">
 </p>
 
+<p align="center">
+  <!-- Version & License -->
+  <a href="https://github.com/RayZ3R0/nozo/releases">
+    <img src="https://img.shields.io/github/v/release/RayZ3R0/nozo?style=flat-square" alt="GitHub release (latest by date)">
+  </a>
+  <a href="https://github.com/RayZ3R0/nozo/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/RayZ3R0/nozo?style=flat-square" alt="GitHub License">
+  </a>
+  
+  <!-- Activity & Size -->
+  <img src="https://img.shields.io/github/downloads/RayZ3R0/nozo/total?style=flat-square&color=blue" alt="Total Downloads">
+  <img src="https://img.shields.io/github/repo-size/RayZ3R0/nozo?style=flat-square" alt="Repo Size">
+  
+  <!-- Tech Stack -->
+  <img src="https://img.shields.io/badge/manifest-v3-orange?style=flat-square" alt="Manifest V3">
+</p>
+
 <h1 align="center">Nozo</h1>
 
 <p align="center">
