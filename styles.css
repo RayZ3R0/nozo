@@ -99,6 +99,16 @@
     border-color: #22c55e;
 }
 
+.nozo-copy-btn:hover {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.nozo-copy-btn.copied {
+    background-color: #22c55e;
+    border-color: #22c55e;
+}
+
 #nozo-iframe {
     background: white;
     width: 100%;
