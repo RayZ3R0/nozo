@@ -16,8 +16,10 @@
     },
     "permissions": [
         "declarativeNetRequest",
-        "declarativeNetRequestWithHostAccess"
+        "declarativeNetRequestWithHostAccess",
+        "storage"
     ],
+    "options_page": "options.html",
     "host_permissions": [
         "*://*/*"
     ],

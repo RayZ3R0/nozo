@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nozo Settings</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="icons/icon48.png" alt="Nozo" class="logo">
+            <h1>Nozo Settings</h1>
+        </header>
+
+        <section class="setting-group">
+            <h2>Drop Zone Position</h2>
+            <p class="description">Choose where the drop zone appears when dragging links.</p>
+            
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="dropZonePosition" value="bottom-center" checked>
+                    <span class="radio-label">Bottom Center</span>
+                    <span class="default-badge">Default</span>
+                </label>
+                
+                <label class="radio-option">
+                    <input type="radio" name="dropZonePosition" value="bottom-left">
+                    <span class="radio-label">Bottom Left</span>
+                </label>
+                
+                <label class="radio-option">
+                    <input type="radio" name="dropZonePosition" value="bottom-right">
+                    <span class="radio-label">Bottom Right</span>
+                </label>
+                
+                <label class="radio-option">
+                    <input type="radio" name="dropZonePosition" value="top-center">
+                    <span class="radio-label">Top Center</span>
+                </label>
+            </div>
+        </section>
+
+        <div class="status" id="status"></div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>

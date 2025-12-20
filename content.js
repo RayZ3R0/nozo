@@ -1,9 +1,27 @@
 // Nozo Content Script
 
-function initNozo() {
+// Cross-browser storage API
+const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
+
+const DEFAULT_POSITION = 'bottom-center';
+
+async function loadDropZonePosition() {
+    try {
+        const result = await storage.sync.get({ dropZonePosition: DEFAULT_POSITION });
+        return result.dropZonePosition || DEFAULT_POSITION;
+    } catch (err) {
+        console.warn('Nozo: Could not load settings, using defaults', err);
+        return DEFAULT_POSITION;
+    }
+}
+
+async function initNozo() {
     if (document.getElementById('nozo-overlay-container')) {
         return;
     }
+
+    // Load user settings
+    const dropZonePosition = await loadDropZonePosition();
 
     // Build overlay container
     const overlayContainer = document.createElement('div');
@@ -50,6 +68,7 @@ function initNozo() {
 
     const dropZone = document.createElement('div');
     dropZone.id = 'nozo-drop-zone';
+    dropZone.className = `nozo-position-${dropZonePosition}`;
     dropZone.textContent = 'Drop here to Nozo';
 
     document.body.appendChild(overlayContainer);

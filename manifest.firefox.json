@@ -20,8 +20,13 @@
         "128": "icons/icon128.png"
     },
     "permissions": [
-        "declarativeNetRequest"
+        "declarativeNetRequest",
+        "storage"
     ],
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": true
+    },
     "host_permissions": [
         "*://*/*"
     ],
