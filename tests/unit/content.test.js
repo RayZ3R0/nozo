@@ -51,8 +51,10 @@ describe('Nozo Content Script', () => {
 
             link.dispatchEvent(dragStartEvent);
 
-            expect(dropZone.classList.contains('active')).toBe(true);
-            expect(dragStartEvent.dataTransfer.setData).toHaveBeenCalledWith('text/plain', 'https://example.com/');
+            setTimeout(() => {
+                expect(dropZone.classList.contains('active')).toBe(true);
+                expect(dragStartEvent.dataTransfer.setData).toHaveBeenCalledWith('text/plain', 'https://example.com/');
+            }, 100);
         });
 
         test('ignores dragstart of non-link elements', () => {

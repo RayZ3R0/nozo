@@ -216,3 +216,13 @@
 #nozo-drop-zone.nozo-position-top-center.hovered {
     transform: translateX(-50%) scale(1.05);
 }
+
+#nozo-drop-zone.nozo-position-entire-window {
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    background: rgb(60 100 255 / 6%);
+}
