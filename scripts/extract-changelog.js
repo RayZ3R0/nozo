@@ -9,6 +9,11 @@ if (!version) {
     process.exit(1);
 }
 
+// Escape special regex characters to prevent ReDoS and fix security/detect-non-literal-regexp
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 try {
     const changelog = fs.readFileSync(changelogPath, 'utf8');
     const lines = changelog.split('\n');
@@ -16,7 +21,10 @@ try {
     let notes = [];
 
     // Regex to match "## [1.0.1]" or "## 1.0.1"
-    const versionHeaderRegex = new RegExp(`^## \\[?${version.replace(/^v/, '')}\\]?`);
+    // Version is sanitized via escapeRegExp to prevent ReDoS attacks
+    const escapedVersion = escapeRegExp(version.replace(/^v/, ''));
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    const versionHeaderRegex = new RegExp(`^## \\[?${escapedVersion}\\]?`);
     const nextHeaderRegex = /^## /;
 
     for (const line of lines) {

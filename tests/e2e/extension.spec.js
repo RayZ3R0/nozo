@@ -39,16 +39,30 @@ test.describe('Nozo Extension E2E', () => {
         const link = page.locator('a').first();
         const dropZone = page.locator('#nozo-drop-zone');
 
-        await page.evaluate(() => {
+        await page.evaluate(async () => {
             const link = document.querySelector('a');
             const dropZone = document.getElementById('nozo-drop-zone');
+            const linkHref = link.href;
 
-            const dragStartEvent = new MouseEvent('dragstart', { bubbles: true, cancelable: true, view: window });
-            Object.defineProperty(dragStartEvent, 'dataTransfer', { value: { setData: () => { }, effectAllowed: 'none' } });
+            // Use DragEvent for proper dataTransfer support
+            const dragStartEvent = new DragEvent('dragstart', { bubbles: true, cancelable: true });
+            Object.defineProperty(dragStartEvent, 'dataTransfer', {
+                value: {
+                    setData: () => { },
+                    effectAllowed: 'none'
+                }
+            });
             link.dispatchEvent(dragStartEvent);
 
-            const dropEvent = new MouseEvent('drop', { bubbles: true, cancelable: true, view: window });
-            Object.defineProperty(dropEvent, 'dataTransfer', { value: { getData: () => '' } });
+            // Wait for the setTimeout in dragstart handler to complete
+            await new Promise(resolve => setTimeout(resolve, 150));
+
+            const dropEvent = new DragEvent('drop', { bubbles: true, cancelable: true });
+            Object.defineProperty(dropEvent, 'dataTransfer', {
+                value: {
+                    getData: (type) => type === 'text/uri-list' || type === 'URL' || type === 'text/plain' ? linkHref : ''
+                }
+            });
             dropZone.dispatchEvent(dropEvent);
         });
 
@@ -73,15 +87,15 @@ test.describe('Nozo Extension E2E', () => {
 
         const dropZone = page.locator('#nozo-drop-zone');
         const link = page.locator('#test-blocked-link');
-        await page.evaluate(() => {
+        await page.evaluate(async () => {
             const link = document.getElementById('test-blocked-link');
             const dropZone = document.getElementById('nozo-drop-zone');
+            const linkHref = link.href;
 
-            // 1. Trigger dragstart on the link
-            const dragStartEvent = new MouseEvent('dragstart', {
+            // 1. Trigger dragstart on the link using DragEvent
+            const dragStartEvent = new DragEvent('dragstart', {
                 bubbles: true,
-                cancelable: true,
-                view: window
+                cancelable: true
             });
             // Mock dataTransfer since we are dispatching manually
             Object.defineProperty(dragStartEvent, 'dataTransfer', {
@@ -92,15 +106,17 @@ test.describe('Nozo Extension E2E', () => {
             });
             link.dispatchEvent(dragStartEvent);
 
-            // 2. Trigger drop on the drop zone
-            const dropEvent = new MouseEvent('drop', {
+            // Wait for the setTimeout in dragstart handler to complete
+            await new Promise(resolve => setTimeout(resolve, 150));
+
+            // 2. Trigger drop on the drop zone using DragEvent
+            const dropEvent = new DragEvent('drop', {
                 bubbles: true,
-                cancelable: true,
-                view: window
+                cancelable: true
             });
             Object.defineProperty(dropEvent, 'dataTransfer', {
                 value: {
-                    getData: () => '', // content.js will use its internal draggedLink variable
+                    getData: (type) => type === 'text/uri-list' || type === 'URL' || type === 'text/plain' ? linkHref : ''
                 }
             });
             dropZone.dispatchEvent(dropEvent);
