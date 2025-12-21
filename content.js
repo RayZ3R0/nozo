@@ -20,6 +20,7 @@ async function initNozo() {
         return;
     }
 
+    const positionEntireWindow = 'entire-window';
     // Load user settings
     const dropZonePosition = await loadDropZonePosition();
 
@@ -128,12 +129,14 @@ async function initNozo() {
         const anchor = target.closest('a');
 
         if (anchor && anchor.href) {
-            draggedLink = anchor.href;
-            dropZone.classList.add('active');
+            setTimeout(() => {
+                draggedLink = anchor.href;
+                dropZone.classList.add('active');
 
-            e.dataTransfer.effectAllowed = 'copy';
-            e.dataTransfer.setData('text/plain', anchor.href);
-            e.dataTransfer.setData('text/uri-list', anchor.href);
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.setData('text/plain', anchor.href);
+                e.dataTransfer.setData('text/uri-list', anchor.href);
+            }, dropZonePosition === positionEntireWindow ? 100 : 0);
         }
     });
 
