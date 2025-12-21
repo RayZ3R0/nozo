@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Nozo",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "description": "Drag and Drop links to peek at them in a modal window.",
     "browser_specific_settings": {
         "gecko": {
